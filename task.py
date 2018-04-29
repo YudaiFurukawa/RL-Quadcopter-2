@@ -34,17 +34,26 @@ class Task():
         reward = 0.0
 
         # Reward positive velocity along z-axis
-        reward += self.sim.v[2]
+        # print(self.sim.pose[:3] -  self.target_pos)
+
+        print(self.sim.v)
+        # if (self.sim.pose[ 2] - self.target_pos[ 2])<0:
+        reward += self.sim.v[2]  # reward positive velocity more 
+        print('reward1', reward)
+        # else:
+        #     reward -=  self.sim.v[2]
+        # print('speed', self.sim.v[2], 'reward', reward)
 
         # Reward positions close to target along z-axis
+        # print(self.sim.pose)
         reward -= (abs(self.sim.pose[ 2] - self.target_pos[ 2])) / 2.0 
-
+        print('reward2', reward)
         # A lower sensativity towards drifting in the xy-plane
         reward -= (abs(self.sim.pose[:2] - self.target_pos[:2])).sum() / 4.0
-
+        print('reward3', reward)
         
         reward -= (abs(self.sim.angular_v[:3])).sum()
-
+        print('reward4', reward)
         return reward
 
     def step_new(self, rotor_speeds):
