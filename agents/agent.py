@@ -37,8 +37,8 @@ class DDPG():
         self.memory = ReplayBuffer(self.buffer_size, self.batch_size)
 
         # Algorithm parameters
-        self.gamma = 0.95  # a discount factor
-        self.tau = 0.001  #  soft update of target parameters
+        self.gamma = 0.99  # default 0.95, a discount factor
+        self.tau = 0.0001  # default 0.001,  soft update of target parameters
 
         # Score tracker and learning parameters
         self.score = 0
@@ -260,11 +260,11 @@ class Critic:
         # Add hidden layer(s) for state pathway
         net_states = layers.Dense(units=32, activation='relu')(states)
         net_states = layers.BatchNormalization()(net_states)
-        net_states = layers.Dropout(0.5)(net_states)
+        net_states = layers.Dropout(0.5)(net_states) #default 0.5
         net_states = layers.Dense(units=64, activation='relu')(net_states)
         net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Dropout(0.5)(net_states)
-        net_states = layers.Dense(units=32, activation='relu')(net_states)
+        net_states = layers.Dense(units=128, activation='relu')(net_states) # from 32 -> 128
         net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Dropout(0.5)(net_states)
 
@@ -272,10 +272,10 @@ class Critic:
         net_actions = layers.Dense(units=32, activation='relu')(actions)
         net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Dropout(0.5)(net_actions)
-        net_actions = layers.Dense(units=64, activation='relu')(net_actions)
+        net_actions = layers.Dense(units=64, activation='relu')(net_actions) 
         net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Dropout(0.5)(net_actions)
-        net_actions = layers.Dense(units=32, activation='relu')(net_actions)
+        net_actions = layers.Dense(units=128, activation='relu')(net_actions) #from 32 -> 128
         net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Dropout(0.5)(net_actions)
 
